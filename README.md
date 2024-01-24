@@ -39,5 +39,5 @@
             "name": "Myo Zin Kyaw",
             "email": "myozinkyaw@onlineedu.com",
         },
-    ];
+    ]
 ```
