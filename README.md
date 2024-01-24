@@ -9,6 +9,12 @@
 - Livewire
 - AlpineJs
 
+## Setup
+
+```bash
+    ./refresh.sh
+```
+
 ## Backend Admin Users
 
 - You can login by using below accounts.
