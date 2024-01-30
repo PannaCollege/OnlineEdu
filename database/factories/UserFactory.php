@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\UserType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -41,6 +42,8 @@ class UserFactory extends Factory
             return [
                 'name' => $admin['name'],
                 'email' => $admin['email'],
+                'username' => trim(str_replace(' ', '', Str::lower($admin['name']))),
+                'type' => UserType::ADMIN(),
             ];
         });
     }
