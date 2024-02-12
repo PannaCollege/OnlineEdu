@@ -8,6 +8,11 @@ use Filament\Tables\Table;
 use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Concerns\InteractsWithInfolists;
+use Filament\Infolists\Contracts\HasInfolists;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 use Filament\Resources\Pages\Page;
 use Filament\Support\Enums\FontWeight;
@@ -20,10 +25,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
-class ViewCourse extends Page implements HasTable
+class ViewCourse extends Page implements HasInfolists, HasTable
 {
     use InteractsWithRecord;
     use InteractsWithTable;
+    use InteractsWithInfolists;
 
     protected static string $resource = CourseResource::class;
 
@@ -56,6 +62,16 @@ class ViewCourse extends Page implements HasTable
                         ->inlineLabel(),
                 ]),
         ];
+    }
+
+    public function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Section::make($this->getRecord()->title)
+                    ->schema([])
+                    ->collapsed()
+            ]);
     }
 
     public function table(Table $table): Table
