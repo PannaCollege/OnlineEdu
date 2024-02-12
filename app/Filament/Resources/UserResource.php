@@ -4,15 +4,15 @@ namespace App\Filament\Resources;
 
 use App\Enums\UserType;
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
-use Filament\Forms;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,6 +24,8 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationGroup = 'User Management';
 
     public static function form(Form $form): Form
     {
@@ -72,11 +74,34 @@ class UserResource extends Resource
             ->columns([
                 TextColumn::make('name'),
                 TextColumn::make('email'),
+                IconColumn::make('is_active')
+                    ->boolean(),
+                IconColumn::make('is_suspended')
+                    ->boolean(),
+                TextColumn::make('suspendedBy.name'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Action::make('suspend')
+                    ->label('')
+                    ->size('md')
+                    ->tooltip('Suspend')
+                    ->requiresConfirmation()
+                    ->icon('heroicon-o-lock-closed')
+                    ->modalHeading('Are you sure ?')
+                    ->hidden(fn (User $user) => $user->isSuspended())
+                    ->action(fn (User $user) => $user->makeSuspend(true)),
+                Action::make('unsuspend')
+                    ->label('')
+                    ->size('md')
+                    ->tooltip('Unsuspend')
+                    ->requiresConfirmation()
+                    ->icon('heroicon-o-lock-open')
+                    ->modalHeading('Are you sure ?')
+                    ->action(fn (User $user) => $user->makeSuspend(false))
+                    ->visible(fn (User $user) => $user->isSuspended()),
                 Tables\Actions\EditAction::make()
                     ->label('')
                     ->size('md')

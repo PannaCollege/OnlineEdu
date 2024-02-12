@@ -11,7 +11,6 @@
         "php": "^8.1",
         "filament/filament": "^3.2",
         "guzzlehttp/guzzle": "^7.2",
-        "harishdurga/laravel-quiz": "^1.2",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8"
@@ -35,7 +34,10 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
-        }
+        },
+        "files": [
+            "helpers.php"
+        ]
     },
     "scripts": {
         "post-autoload-dump": [
