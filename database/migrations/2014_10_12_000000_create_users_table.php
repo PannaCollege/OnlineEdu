@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('type')->default(UserType::USER());
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->text('google_id')->nullable();
             $table->boolean('is_active')->default(true);
             $table->boolean('is_suspended')->default(false);
             $table->foreignUlid('suspended_by')->nullable();

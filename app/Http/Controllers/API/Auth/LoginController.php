@@ -2,13 +2,22 @@
 
 namespace App\Http\Controllers\API\Auth;
 
+use Exception;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
+    /**
+     * Online edu default login
+     * 
+     * @param LoginRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(LoginRequest $request)
     {
         $user = User::query()
@@ -38,6 +47,39 @@ class LoginController extends Controller
             ]);
         } else {
             return response_unauthorized();
+        }
+    }
+
+    /**
+     * Online edu login using google
+     */
+    public function handleGoogleCallback()
+    {
+        try {
+            $user = DB::transaction(function () {
+                Socialite::driver('google')->stateless()->user();
+
+                $googleUser = Socialite::driver('google')->user();
+
+                $user = User::where('google_id', $googleUser->id)->first();
+
+                if (!$user) {
+                    $user = User::registerByGoogle($googleUser);
+                }
+
+                return $user;
+            });
+
+            return response_ok([
+                'data' => [
+                    'name' => $user->getName(),
+                    'type' => $user->getUserType(),
+                    '_token' => $user->createToken('sanctum')->plainTextToken,
+
+                ]
+            ]);
+        } catch (Exception $exception) {
+            return response_error($exception->getMessage(), $exception->getCode());
         }
     }
 }

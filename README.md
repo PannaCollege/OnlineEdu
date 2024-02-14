@@ -47,3 +47,20 @@
         },
     ]
 ```
+
+## Third Party Authentication 
+
+### Google 
+
+```php
+    # Google Socialite
+    GOOGLE_CLIENT_ID=
+    GOOGLE_CLIENT_SECRET=
+    GOOGLE_FALLBACK_URI=
+```
+
+## We'are using following packages
+
+- filament/filament ( Online edu admin panel )
+- laravel/socialite ( Third-party authentication )
+- laravel/sanctum ( Online edu default authentication )

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserType;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -32,6 +33,7 @@ class User extends Authenticatable
         'type',
         'password',
         'is_active',
+        'google_id',
         'is_suspended',
         'suspended_by',
     ];
@@ -182,12 +184,34 @@ class User extends Authenticatable
     }
 
     /**
-     * functions
+     * suspend / unsuspend to user
+     * 
+     * @param bool $isSuspended
+     * @return void
      */
     public function makeSuspend($isSuspended = true): void
     {
         $this->is_suspended = $isSuspended;
         $this->suspended_by = $isSuspended ? auth()->id() : null;
         $this->save();
+    }
+
+    /**
+     * create user register by google
+     * 
+     * @param $googleUser
+     * @return User $user
+     */
+    public static function registerByGoogle($googleUser): User
+    {
+        $user = new User();
+        $user->name = $googleUser->name;
+        $user->email = $googleUser->email;
+        $user->type = UserType::USER();
+        $user->password = $googleUser->name;
+        $user->google_id = $googleUser->id;
+        $user->save();
+
+        return $user;
     }
 }
