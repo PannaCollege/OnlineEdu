@@ -1,4 +1,4 @@
-# OnlineEdus
+# OnlineEdu
 
 ### Tech
 - PHP
@@ -14,6 +14,8 @@
 ```bash
     ./refresh.sh
 ```
+
+> Postman collection already included in root directory.
 
 ## Backend Admin Users
 

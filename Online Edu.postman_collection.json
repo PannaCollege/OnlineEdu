@@ -1,0 +1,101 @@
+{
+	"info": {
+		"_postman_id": "834905aa-2471-444c-bb6c-6faa88e7b020",
+		"name": "Online Edu",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "19286415"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"myozinkyaw@onlineedu.com\",\n    \"password\": \"secret\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Google Login",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": "{{url}}/auth/google/callback"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Lists",
+			"item": [
+				{
+					"name": "Courses",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": "{{url}}/list/courses"
+					},
+					"response": []
+				},
+				{
+					"name": "Lessons By Course",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": "{{url}}/list/lessons-by-course/01hpdwb9pzhnbybxyp6x8ndc1c"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
